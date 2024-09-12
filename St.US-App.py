@@ -2,6 +2,51 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+import pandas as pd
+#df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/Mining-BTC-180.csv")
+df_edit_items_retirados = pd.read_csv(r'C:\Users\KN12QFB\OneDrive-Deere&Co\OneDrive - Deere & Co\Desktop\DASHBOARD\ItemsRetirados_EDGEStore (1) - Copy.csv')
+
+
+print(df_edit_items_retirados["Created"])
+
+df_edit_items_retirados['Created']=pd.to_datetime(df_edit_items_retirados['Created'])#Convertir de 29/01/2024 a 29-01-2024
+print("----")
+print(df_edit_items_retirados['Created'])
+
+df_edit_items_retirados['year'] = pd.DatetimeIndex(df_edit_items_retirados['Created']).year #Extrar AÑO de la columna 'Created' (29-01-2024 00:00:00)
+print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
+#Este dataframe contiene el número total de items y su cantidad 
+df_items_totales=df_edit_items_retirados['Item_Title'].value_counts(dropna=True).rename_axis('Items totales').reset_index(name='Total')         
+###############################################################
+
+
+
+
+print(df_edit_items_retirados['year'])
+print("ITEMS TOTALES\n", df_items_totales)
+print(df_items_totales['Total'])
+
+
+fig = make_subplots(
+    rows=1, cols=1,
+    shared_xaxes=True,
+    vertical_spacing=0.03,
+    specs=[[{"type": "bar"}],]
+)
+
+x=fig.add_trace(
+    go.Bar(
+        x=df_items_totales["Total"],
+        y=df_items_totales["Items totales"],
+        orientation='h'
+    ),
+    row=1, col=1
+)
+
 
 
 #df_main_ItemsRetirados = pd.read_csv(r'C:\Users\KN12QFB\Downloads\ItemsRetirados_EDGEStore (1).csv')
@@ -15,7 +60,7 @@ st.set_page_config(
 
 alt.themes.enable("dark")
 
-df_reshaped = pd.read_csv('us-population-2010-2019-reshaped.csv')
+df_reshaped = pd.read_csv(r'C:\Users\KN12QFB\Downloads\us-population-2010-2019-reshaped.csv')
 
 with st.sidebar:
     st.title('🏀 US Poplt')
@@ -179,11 +224,11 @@ with col[0]:
 with col[1]:
     st.markdown('#### Total Population')
     
-    choropleth = make_choropleth(df_selected_year, 'states_code', 'population', selected_color_theme)
-    st.plotly_chart(choropleth, use_container_width=True)
+    #choropleth = make_choropleth(df_selected_year, 'states_code', 'population', selected_color_theme)
+    st.plotly_chart(x, use_container_width=True)
     
-    heatmap = make_heatmap(df_reshaped, 'year', 'states', 'population', selected_color_theme)
-    st.altair_chart(heatmap, use_container_width=True)
+    #heatmap = make_heatmap(df_reshaped, 'year', 'states', 'population', selected_color_theme)
+    #st.altair_chart(heatmap, use_container_width=True)
 
 
 with col[2]:
