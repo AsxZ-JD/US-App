@@ -11,7 +11,7 @@ from plotly.subplots import make_subplots
 
 import pandas as pd
 #df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/Mining-BTC-180.csv")
-df_edit_items_retirados = pd.read_csv(r'C:\Users\KN12QFB\OneDrive-Deere&Co\OneDrive - Deere & Co\Desktop\DASHBOARD\ItemsRetirados_EDGEStore (1) - Copy.csv')
+df_edit_items_retirados = pd.read_csv("ItemsRetirados_EDGEStore (1).csv")
 
 
 print(df_edit_items_retirados["Created"])
