@@ -7,45 +7,6 @@ from plotly.subplots import make_subplots
 
 import pandas as pd
 #df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/Mining-BTC-180.csv")
-df_edit_items_retirados = pd.read_csv(r'C:\Users\KN12QFB\Downloads\ItemsRetirados_EDGEStore (1).csv')
-
-
-print(df_edit_items_retirados["Created"])
-
-df_edit_items_retirados['Created']=pd.to_datetime(df_edit_items_retirados['Created'])#Convertir de 29/01/2024 a 29-01-2024
-print("----")
-print(df_edit_items_retirados['Created'])
-
-df_edit_items_retirados['year'] = pd.DatetimeIndex(df_edit_items_retirados['Created']).year #Extrar AÑO de la columna 'Created' (29-01-2024 00:00:00)
-print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-
-#Este dataframe contiene el número total de items y su cantidad 
-df_items_totales=df_edit_items_retirados['Item_Title'].value_counts(dropna=True).rename_axis('Items totales').reset_index(name='Total')         
-###############################################################
-
-
-
-
-print(df_edit_items_retirados['year'])
-print("ITEMS TOTALES\n", df_items_totales)
-print(df_items_totales['Total'])
-
-
-fig = make_subplots(
-    rows=1, cols=1,
-    shared_xaxes=True,
-    vertical_spacing=0.03,
-    specs=[[{"type": "bar"}],]
-)
-
-x=fig.add_trace(
-    go.Bar(
-        x=df_items_totales["Total"],
-        y=df_items_totales["Items totales"],
-        orientation='h'
-    ),
-    row=1, col=1
-)
 
 
 
