@@ -1,13 +1,8 @@
+@@ -0,0 +1,213 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-
-import pandas as pd
-#df = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/Mining-BTC-180.csv")
-
 
 
 #df_main_ItemsRetirados = pd.read_csv(r'C:\Users\KN12QFB\Downloads\ItemsRetirados_EDGEStore (1).csv')
@@ -84,7 +79,7 @@ def make_donut(input_response, input_text, input_color):
       chart_color = ['#F39C12', '#875A12']
   if input_color == 'red':
       chart_color = ['#E74C3C', '#781F16']
-    
+
   source = pd.DataFrame({
       "Topic": ['', input_text],
       "% value": [100-input_response, input_response]
@@ -93,7 +88,7 @@ def make_donut(input_response, input_text, input_color):
       "Topic": ['', input_text],
       "% value": [100, 0]
   })
-    
+
   plot = alt.Chart(source).mark_arc(innerRadius=45, cornerRadius=25).encode(
       theta="% value",
       color= alt.Color("Topic:N",
@@ -104,7 +99,7 @@ def make_donut(input_response, input_text, input_color):
                           range=chart_color),
                       legend=None),
   ).properties(width=130, height=130)
-    
+
   text = plot.mark_text(align='center', color="#29b5e8", font="Lato", fontSize=32, fontWeight=700, fontStyle="italic").encode(text=alt.value(f'{input_response} %'))
   plot_bg = alt.Chart(source_bg).mark_arc(innerRadius=45, cornerRadius=20).encode(
       theta="% value",
@@ -154,7 +149,7 @@ with col[0]:
         last_state_delta = ''
     st.metric(label=last_state_name, value=last_state_population, delta=last_state_delta)
 
-    
+
     st.markdown('#### States Migration')
 
     if selected_year > 2010:
@@ -162,7 +157,7 @@ with col[0]:
         # df_greater_50000 = df_population_difference_sorted[df_population_difference_sorted.population_difference_absolute > 50000]
         df_greater_50000 = df_population_difference_sorted[df_population_difference_sorted.population_difference > 50000]
         df_less_50000 = df_population_difference_sorted[df_population_difference_sorted.population_difference < -50000]
-        
+
         # % of States with population difference > 50000
         states_migration_greater = round((len(df_greater_50000)/df_population_difference_sorted.states.nunique())*100)
         states_migration_less = round((len(df_less_50000)/df_population_difference_sorted.states.nunique())*100)
@@ -184,12 +179,12 @@ with col[0]:
 
 with col[1]:
     st.markdown('#### Total Population')
-    
-    #choropleth = make_choropleth(df_selected_year, 'states_code', 'population', selected_color_theme)
-    st.plotly_chart(x, use_container_width=True)
-    
-    #heatmap = make_heatmap(df_reshaped, 'year', 'states', 'population', selected_color_theme)
-    #st.altair_chart(heatmap, use_container_width=True)
+
+    choropleth = make_choropleth(df_selected_year, 'states_code', 'population', selected_color_theme)
+    st.plotly_chart(choropleth, use_container_width=True)
+
+    heatmap = make_heatmap(df_reshaped, 'year', 'states', 'population', selected_color_theme)
+    st.altair_chart(heatmap, use_container_width=True)
 
 
 with col[2]:
@@ -210,7 +205,7 @@ with col[2]:
                         max_value=max(df_selected_year_sorted.population),
                      )}
                  )
-    
+
     with st.expander('About', expanded=True):
         st.write('''
             - Data: [U.S. Census Bureau](<https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html>).
